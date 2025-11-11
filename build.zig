@@ -76,6 +76,6 @@ pub fn build(b: *Build) !void {
     b.installArtifact(lib);
 }
 
-pub fn include_path() [:0]const u8 {
+pub fn cimgui_include_path() [:0]const u8 {
     return "./cimgui";
 }
