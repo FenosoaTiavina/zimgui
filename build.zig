@@ -3,8 +3,16 @@ const std = @import("std");
 const Build = std.Build;
 const Compile = std.Build.Step.Compile;
 
-pub const Platform = @import("./platform_renderer.zig").Platform;
-pub const Renderer = @import("./platform_renderer.zig").Renderer;
+pub const Renderer = enum {
+    vulkan,
+    opengl3,
+};
+
+pub const Platform = enum {
+    glfw,
+    sdl3,
+    // SDLGPU3,
+};
 
 const ImGuiOptions = struct {
     platform: Platform,
