@@ -53,15 +53,11 @@ fn submodule_update(b: *Build) !void {
     b.getInstallStep().dependOn(update_step);
 }
 
-var _cimigui_path: *Build.LazyPath = undefined;
-
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     try submodule_update(b);
-
-    _cimigui_path = b.path("./cimgui");
 
     var imgui = try b.allocator.create(ImGuiOptions);
     defer b.allocator.destroy(imgui);
