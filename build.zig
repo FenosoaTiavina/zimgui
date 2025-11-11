@@ -3,8 +3,8 @@ const std = @import("std");
 const Build = std.Build;
 const Compile = std.Build.Step.Compile;
 
-const Platform = @import("./platform_renderer.zig").Platform;
-const Renderer = @import("./platform_renderer.zig").Renderer;
+pub const Platform = @import("./platform_renderer.zig").Platform;
+pub const Renderer = @import("./platform_renderer.zig").Renderer;
 
 const ImGuiOptions = struct {
     platform: Platform,
@@ -58,7 +58,7 @@ pub fn build(b: *Build) !void {
     try generate_cimgui(b, imgui.platform, imgui.renderer);
 
     const lib = b.addLibrary(.{
-        .name = "cimgui",
+        .name = "zimgui",
         .root_module = std.Build.Module.create(b, .{
             .root_source_file = b.addWriteFiles().add("empty.zig", ""),
             .target = target,
