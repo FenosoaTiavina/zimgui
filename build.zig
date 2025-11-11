@@ -41,10 +41,22 @@ fn generate_cimgui(b: *Build, p: Platform, r: Renderer) !void {
 
     b.getInstallStep().dependOn(generate_step);
 }
+fn submodule_update(b: *Build) !void {
+    const run_script = b.addSystemCommand(&[_][]const u8{
+        "git", "submodule", "update", "--init", "--recursive",
+    });
+
+    const update_step = b.step("update-submodules", "Update zimgui submodules");
+    update_step.dependOn(&run_script.step);
+
+    b.getInstallStep().dependOn(update_step);
+}
 
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+
+    try submodule_update(b);
 
     var imgui = try b.allocator.create(ImGuiOptions);
     defer b.allocator.destroy(imgui);
