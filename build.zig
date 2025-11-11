@@ -41,6 +41,7 @@ fn generate_cimgui(b: *Build, p: Platform, r: Renderer) !void {
 
     b.getInstallStep().dependOn(generate_step);
 }
+
 fn submodule_update(b: *Build) !void {
     const run_script = b.addSystemCommand(&[_][]const u8{
         "git", "submodule", "update", "--init", "--recursive",
@@ -52,11 +53,15 @@ fn submodule_update(b: *Build) !void {
     b.getInstallStep().dependOn(update_step);
 }
 
+var _cimigui_path: *Build.LazyPath = undefined;
+
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     try submodule_update(b);
+
+    _cimigui_path = b.path("./cimgui");
 
     var imgui = try b.allocator.create(ImGuiOptions);
     defer b.allocator.destroy(imgui);
@@ -94,8 +99,4 @@ pub fn build(b: *Build) !void {
     lib.linkLibCpp();
 
     b.installArtifact(lib);
-}
-
-pub fn cimgui_include_path() [:0]const u8 {
-    return "./cimgui";
 }
